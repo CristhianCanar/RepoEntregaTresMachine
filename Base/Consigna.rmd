@@ -1,0 +1,115 @@
+---
+title: "Actividad 001: Fundamentos de Python y RMarkdown"
+author: Ph. D. Pablo Eduardo Caicedo R.
+date: 6 de octubre de 2021
+output:
+    memor::pdf_memo:
+        toc: true
+        toc_depth: 3
+        keep_tex: true
+        fig_caption: yes
+        latex_engine: xelatex
+        logo: ./logo.png
+        logo_height: 3.0cm
+        use_profile: false
+        company:
+            name: Corporaci\'on Universitaria Aut\'onoma del Cauca
+            address: Facultad de Ingenier\'ia
+            email: pablo.caicedo.r@uniautonoma.edu.co
+        confidential: false
+        libertine: true
+        includes:
+            in_header: ./preamble.tex
+header-includes:
+    \renewcommand{\contentsname}{Contenidos}
+---
+
+```{r setup, include=FALSE}
+library("reticulate")
+use_condaenv("dsenvpy310")
+knitr::opts_chunk$set(echo = FALSE)
+
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\n \\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+
+```
+
+# Conjunto de datos
+
+En el año 1936, [Ronald Fisher](https://es.wikipedia.org/wiki/Ronald_Fisher) publica su artículo titulado "The use of multiple measurements in taxonomic problems" donde ejemplifica la técnica estadística [_análisis lineal discriminante_](https://es.wikipedia.org/wiki/An%C3%A1lisis_discriminante_lineal). Para ello utiliza un conjunto de datos; colectado por Edgar Anderson, el cual tiene información de mediciones de 150 flores de la familia [iridacea](https://es.wikipedia.org/wiki/Iridaceae), 50 de la especie Iris setosa, 50 de la especie Iris virginica y 50 de la especie Iris versicolor.
+
+El conjunto de datos posee 5 características: ancho y largo de sépalo, al igual que ancho y largo del pétalo. Finalmente tiene una columna de clase donde se encuentra la especie de la flor.
+
+## Ubicación del archivo
+
+El dataset puede ser fácilmente encontrado en internet, por ejemplo en el repositorio del [Centro para el Aprendizaje de Máquina y Sistemas Inteligentes de la Universidad de California](https://cml.ics.uci.edu/); el cual se encuentra en esta [url](https://archive.ics.uci.edu/ml/index.php).
+
+La descarga y la descripción completa del DATASET se encuentra en la siguiente [url](https://archive.ics.uci.edu/ml/datasets/iris).
+
+## El conjunto de datos en Python
+
+Sin embargo, la forma más sencilla de utilizarlo es através de la librería _Scikit-learn_, que es instalable vía conda con el comando:
+
+```{bash, eval=FALSE}
+conda install scikit-learn
+```
+
+Una vez se ha instalado la librería ya será utilizable en jupyter utilizando el siguiente código:
+
+```{python}
+import pandas as pd
+from sklearn import datasets
+import matplotlib.pyplot as plt
+```
+
+Utilizando el módulo _datasets_ y la función _load.iris()_ se cargan los datos del conjunto de datos
+
+```{python}
+iris01 = datasets.load_iris()
+```
+
+Finalmente, se hace una adecuación del formato del dataset y se realiza una gráfica básica de la información de la clase.
+
+```{python, size="tiny", tidy=TRUE, results="hide"}
+iris = pd.DataFrame(iris01.data, columns=iris01.feature_names)
+iris["Target"] = iris01.target
+fig01 = plt.figure(figsize=(9,8))
+ax01 = iris.Target.value_counts().plot(kind="bar")
+ax01.set_xticklabels(["Iris-Setosa", "Iris-Versicolor", "Iris-Virginica"],
+                     rotation=0)
+ax01.set_title("Cantidad de registros por clase")
+fig01.add_axes(ax01)
+```
+
+Se advierte que en la columna Target:
+
+- 0 equivale a la especie Iris-Setosa,
+- 1 a la especie Iris_Versicolor
+- 2 a la especie Iris-Virginica
+
+## Estadística descriptiva del conjunto de datos
+
+```{r}
+library("tidyverse")
+data.iris <- iris
+summary(data.iris)
+```
+
+### Tendencia central
+
+#### Tendencia central para la especie Iris-Setosa
+
+#### Tendencia central para la especie Iris-Versicolor
+
+#### Tendencia central para la especie Iris-Virginica
+
+### Dispersión
+
+#### Dispersión para la especie Iris-Setosa
+
+#### Dispersión para la especie Iris-Versicolor
+
+#### Dispersión para la especie Iris-Virginica
