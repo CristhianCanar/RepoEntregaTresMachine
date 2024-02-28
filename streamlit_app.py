@@ -9,13 +9,13 @@ from sklearn.preprocessing import MinMaxScaler
 #load_options = tf.saved_model.LoadOptions(experimental_io_device='/job:localhost')
 
 # Carga el modelo guardado usando tf.saved_model.load()
-loaded_model = tf.keras.models.load_model('C:/Users/crist/Documents/UNIVERSIDAD/Semestre IX/MachineLearning/consignas/RepoEntregaTres/train/')
+loaded_model = tf.keras.models.load_model('train/')
 # Loading th saved model
 
 def salaryPrediction(inputData, listado_num):
-    entradas_web = pd.read_csv("C:/Users/crist/Documents/UNIVERSIDAD/Semestre IX/MachineLearning/consignas/RepoEntregaTres/df_pruebas.csv",
+    entradas_web = pd.read_csv("df_pruebas.csv",
                             delimiter= ",", decimal= ".")
-    entradas_web_cat = pd.read_csv("C:/Users/crist/Documents/UNIVERSIDAD/Semestre IX/MachineLearning/consignas/RepoEntregaTres/entradas_df_norm_pruebas.csv",
+    entradas_web_cat = pd.read_csv("entradas_df_norm_pruebas.csv",
                         delimiter= ",", decimal= ".")
     df_cat = entradas_web_cat.iloc[:,0:21]
     nuevo_df_num = entradas_web.loc[:,['age','hours_per_week']]
@@ -37,10 +37,10 @@ def salaryPrediction(inputData, listado_num):
     prediction = loaded_model.predict(df_final)
     print(prediction)
     print(np.round(prediction[0]))
-    if(np.round(prediction[0]) == 0):
-        return 'La persona ganará mas de 50mil dolares al año'
+    if(np.round(prediction[0]) == 0): 
+        return 'La persona ganará mas de 50mil dolares al año 🤩'
     else:
-        return 'La persona no ganará 50mil dolares al año :( '
+        return 'La persona no ganará 50mil dolares al año 😔'
 
 def validarEducacion(education):
     education_tuple = [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
