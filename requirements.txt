@@ -1,5 +1,5 @@
 numpy
 streamlit
-tensorflow
+tensorflow==2.10.0
 pandas
 scikit_learn
